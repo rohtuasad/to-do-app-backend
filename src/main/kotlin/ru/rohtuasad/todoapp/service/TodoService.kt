@@ -26,7 +26,7 @@ class TodoService {
         }
     }
 
-    private fun findById(id: Long): Todo? {
+    fun findById(id: Long): Todo? {
         return todos.find { todo -> todo.id == id }
     }
 }
