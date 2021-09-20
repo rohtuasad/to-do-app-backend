@@ -6,6 +6,7 @@ import java.time.LocalDate
 
 @Service
 class TodoService {
+    private var idCounter = 3L
     private val todos: MutableList<Todo> =
         mutableListOf(
             Todo(1, "username", "Learn React", LocalDate.now(), false),
@@ -28,5 +29,16 @@ class TodoService {
 
     fun findById(id: Long): Todo? {
         return todos.find { todo -> todo.id == id }
+    }
+
+    fun saveTodo(todo: Todo): Todo {
+        if (todo.id == -1L) {
+            todo.id = ++idCounter
+            todos.add(todo)
+        } else {
+            deleteById(todo.id)
+            todos.add(todo)
+        }
+        return todo
     }
 }

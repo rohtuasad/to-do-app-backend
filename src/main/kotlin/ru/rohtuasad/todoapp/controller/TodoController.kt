@@ -1,5 +1,6 @@
 package ru.rohtuasad.todoapp.controller
 
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import ru.rohtuasad.todoapp.dto.Todo
@@ -19,8 +20,17 @@ class TodoController(val todoService: TodoService) {
         return todoService.findById(id)
     }
 
+    @PutMapping("/users/{username}/todos/{id}")
+    fun updateTodo(
+        @PathVariable username: String,
+        @PathVariable id: Long,
+        @RequestBody todo: Todo
+    ): ResponseEntity<Todo> {
+        return ResponseEntity<Todo>(todoService.saveTodo(todo), HttpStatus.OK)
+    }
+
     @DeleteMapping("/users/{username}/todos/{id}")
-    fun deleteTodo(@PathVariable username: String, @PathVariable id: Long) : ResponseEntity<Void> {
+    fun deleteTodo(@PathVariable username: String, @PathVariable id: Long): ResponseEntity<Void> {
         val todo = todoService.deleteById(id)
         return if (todo != null) {
             ResponseEntity.noContent().build()
@@ -28,6 +38,4 @@ class TodoController(val todoService: TodoService) {
             ResponseEntity.notFound().build()
         }
     }
-
-
 }
