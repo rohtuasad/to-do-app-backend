@@ -6,12 +6,12 @@ import java.time.LocalDate
 
 @Service
 class TodoService {
-    private var idCounter = 3L
+    private var idCounter = 0L
     private val todos: MutableList<Todo> =
         mutableListOf(
-            Todo(1, "username", "Learn React", LocalDate.now(), false),
-            Todo(2, "username", "Become expert in React", LocalDate.now(), false),
-            Todo(3, "username", "Visit India", LocalDate.now(), false)
+            Todo(++idCounter, "username", "Learn React", LocalDate.now(), false),
+            Todo(++idCounter, "username", "Become expert in React", LocalDate.now(), false),
+            Todo(++idCounter, "username", "Visit India", LocalDate.now(), false)
         )
 
     fun findAll(): List<Todo> {
@@ -32,7 +32,7 @@ class TodoService {
     }
 
     fun saveTodo(todo: Todo): Todo {
-        if (todo.id == -1L) {
+        if (todo.id == -1L || todo.id == 0L) {
             todo.id = ++idCounter
             todos.add(todo)
         } else {

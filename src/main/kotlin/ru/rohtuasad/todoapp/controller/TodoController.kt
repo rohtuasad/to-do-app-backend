@@ -3,6 +3,7 @@ package ru.rohtuasad.todoapp.controller
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import ru.rohtuasad.todoapp.dto.Todo
 import ru.rohtuasad.todoapp.service.TodoService
 
@@ -27,6 +28,16 @@ class TodoController(val todoService: TodoService) {
         @RequestBody todo: Todo
     ): ResponseEntity<Todo> {
         return ResponseEntity<Todo>(todoService.saveTodo(todo), HttpStatus.OK)
+    }
+
+    @PostMapping("/users/{username}/todos")
+    fun updateTodo(
+        @PathVariable username: String, @RequestBody todo: Todo
+    ): ResponseEntity<Void> {
+        val createdTodo = todoService.saveTodo(todo)
+        val uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+            .buildAndExpand(createdTodo.id).toUri()
+        return ResponseEntity.created (uri).build()
     }
 
     @DeleteMapping("/users/{username}/todos/{id}")
