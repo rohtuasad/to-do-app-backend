@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import ru.rohtuasad.todoapp.dto.Todo
 import ru.rohtuasad.todoapp.service.TodoService
+import java.util.*
 
 @RestController
 @CrossOrigin(origins = ["http://localhost:4200"])
@@ -17,14 +18,14 @@ class TodoController(val todoService: TodoService) {
     }
 
     @GetMapping("/users/{username}/todos/{id}")
-    fun getTodo(@PathVariable username: String, @PathVariable id: Long): Todo? {
+    fun getTodo(@PathVariable username: String, @PathVariable id: UUID): Todo? {
         return todoService.findById(id)
     }
 
     @PutMapping("/users/{username}/todos/{id}")
     fun updateTodo(
         @PathVariable username: String,
-        @PathVariable id: Long,
+        @PathVariable id: UUID,
         @RequestBody todo: Todo
     ): ResponseEntity<Todo> {
         return ResponseEntity<Todo>(todoService.saveTodo(todo), HttpStatus.OK)
@@ -41,7 +42,7 @@ class TodoController(val todoService: TodoService) {
     }
 
     @DeleteMapping("/users/{username}/todos/{id}")
-    fun deleteTodo(@PathVariable username: String, @PathVariable id: Long): ResponseEntity<Void> {
+    fun deleteTodo(@PathVariable username: String, @PathVariable id: UUID): ResponseEntity<Void> {
         val todo = todoService.deleteById(id)
         return if (todo != null) {
             ResponseEntity.noContent().build()
