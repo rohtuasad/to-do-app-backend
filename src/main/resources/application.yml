@@ -1,5 +1,5 @@
 spring:
-  security:
-    user:
-      name: username
-      password: password
+  h2:
+    console:
+      enabled: true
+debug: true
