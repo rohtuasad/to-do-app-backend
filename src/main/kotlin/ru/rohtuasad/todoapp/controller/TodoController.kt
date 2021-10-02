@@ -14,7 +14,7 @@ class TodoController(val todoService: TodoService) {
 
     @GetMapping("/users/{username}/todos")
     fun getAllTodos(@PathVariable username: String): List<Todo> {
-        return todoService.findAll()
+        return todoService.findAll(username)
     }
 
     @GetMapping("/users/{username}/todos/{id}")
@@ -43,11 +43,7 @@ class TodoController(val todoService: TodoService) {
 
     @DeleteMapping("/users/{username}/todos/{id}")
     fun deleteTodo(@PathVariable username: String, @PathVariable id: UUID): ResponseEntity<Void> {
-        val todo = todoService.deleteById(id)
-        return if (todo != null) {
-            ResponseEntity.noContent().build()
-        } else {
-            ResponseEntity.notFound().build()
-        }
+        todoService.deleteById(id)
+        return ResponseEntity.noContent().build()
     }
 }

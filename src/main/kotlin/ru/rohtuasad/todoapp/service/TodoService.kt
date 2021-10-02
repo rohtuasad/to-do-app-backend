@@ -1,43 +1,26 @@
 package ru.rohtuasad.todoapp.service
 
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import ru.rohtuasad.todoapp.model.Todo
-import java.time.LocalDate
+import ru.rohtuasad.todoapp.repository.TodoRepository
 import java.util.*
 
 @Service
-class TodoService {
-    private val todos: MutableList<Todo> =
-        mutableListOf(
-            Todo(UUID.randomUUID(),"Learn React", LocalDate.now(), false, "username"),
-            Todo(UUID.randomUUID(), "Become expert in React", LocalDate.now(), false, "username"),
-            Todo(UUID.randomUUID(), "Visit India", LocalDate.now(), false, "username")
-        )
-
-    fun findAll(): List<Todo> {
-        return todos
+class TodoService(val todoRepository: TodoRepository) {
+    fun findAll(username: String): List<Todo> {
+        return todoRepository.findAllByUserName(username)
     }
 
-    fun deleteById(id: UUID): Todo? {
-        val todo = findById(id)
-        return if (todos.remove(todo)) {
-            todo
-        } else {
-            null
-        }
+    fun deleteById(id: UUID) {
+        todoRepository.deleteById(id)
     }
 
     fun findById(id: UUID): Todo? {
-        return todos.find { todo -> todo.id == id }
+        return todoRepository.findByIdOrNull(id)
     }
 
     fun saveTodo(todo: Todo): Todo {
-        if (todo.id == null) {
-            todos.add(todo)
-        } else {
-            deleteById(todo.id!!)
-            todos.add(todo)
-        }
-        return todo
+        return todoRepository.save(todo)
     }
 }
