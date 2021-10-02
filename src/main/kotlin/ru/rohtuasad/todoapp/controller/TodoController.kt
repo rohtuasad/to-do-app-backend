@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
-import ru.rohtuasad.todoapp.dto.Todo
+import ru.rohtuasad.todoapp.model.Todo
 import ru.rohtuasad.todoapp.service.TodoService
 import java.util.*
 

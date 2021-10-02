@@ -33,13 +33,13 @@ class User() : Persistable<UUID>, UserDetails {
 
     @Id
     @JsonProperty("user-id")
-    private var userId: UUID? = UUID.randomUUID()
+    private var userId: UUID? = null
 
     @JsonProperty("name")
     lateinit var name: String
 
     @JsonProperty("login")
-    private lateinit var login: String
+    lateinit var login: String
 
     private lateinit var password: String
     private var isEnabled: Boolean = true
@@ -47,8 +47,11 @@ class User() : Persistable<UUID>, UserDetails {
     @JsonProperty("email")
     private lateinit var email: String
 
-    override fun getId(): UUID? {
-        return UUID.randomUUID()
+    override fun getId(): UUID {
+        if (this.userId == null) {
+            this.userId = UUID.randomUUID()
+        }
+        return this.userId!!
     }
 
     override fun isNew(): Boolean {

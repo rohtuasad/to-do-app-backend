@@ -1,18 +1,17 @@
 package ru.rohtuasad.todoapp.service
 
 import org.springframework.stereotype.Service
-import ru.rohtuasad.todoapp.dto.Todo
+import ru.rohtuasad.todoapp.model.Todo
 import java.time.LocalDate
 import java.util.*
 
 @Service
 class TodoService {
-    private var idCounter = 0L
     private val todos: MutableList<Todo> =
         mutableListOf(
-            Todo(UUID.randomUUID(), "username", "Learn React", LocalDate.now(), false),
-            Todo(UUID.randomUUID(), "username", "Become expert in React", LocalDate.now(), false),
-            Todo(UUID.randomUUID(), "username", "Visit India", LocalDate.now(), false)
+            Todo(UUID.randomUUID(),"Learn React", LocalDate.now(), false, "username"),
+            Todo(UUID.randomUUID(), "Become expert in React", LocalDate.now(), false, "username"),
+            Todo(UUID.randomUUID(), "Visit India", LocalDate.now(), false, "username")
         )
 
     fun findAll(): List<Todo> {
@@ -34,7 +33,6 @@ class TodoService {
 
     fun saveTodo(todo: Todo): Todo {
         if (todo.id == null) {
-            todo.id = UUID.randomUUID()
             todos.add(todo)
         } else {
             deleteById(todo.id!!)
